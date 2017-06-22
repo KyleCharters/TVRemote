@@ -1,7 +1,7 @@
 #include <IRTransmitter.h>
 
 //Set pin that infrared led is connected to
-#define IR_PIN D6
+#define IR_PIN D0
 //Set pin that led is connected to
 #define LED_PIN D7
 
@@ -48,7 +48,7 @@ void transmit(unsigned int * data){
     signalData[i] = data[i - 35];
 
   //Send signal through ir led
-  transmitter.Transmit(signalData, sizeof(signalData) / sizeof(signalData[0]));
+  transmitter.Transmit(signalData, 68);
 }
 
 void receivedAction(const char *event, const char *data){
