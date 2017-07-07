@@ -51,97 +51,163 @@ void transmit(unsigned int * data){
   transmitter.Transmit(signalData, 68);
 }
 
-void receivedAction(const char *event, const char *data){
-  //Decide action based on first character
-  switch (data[0]) {
+int postPower(String command){
+  switch (command[0]) {
     case '0':
-      transmit(tv_num_0);
-      break;
-    case '1':
-      transmit(tv_num_1);
-      break;
-    case '2':
-      transmit(tv_num_2);
-      break;
-    case '3':
-      transmit(tv_num_3);
-      break;
-    case '4':
-      transmit(tv_num_4);
-      break;
-    case '5':
-      transmit(tv_num_5);
-      break;
-    case '6':
-      transmit(tv_num_6);
-      break;
-    case '7':
-      transmit(tv_num_7);
-      break;
-    case '8':
-      transmit(tv_num_8);
-      break;
-    case '9':
-      transmit(tv_num_9);
-      break;
-    case 'a':
-      transmit(tv_on);
-      break;
-    case 'b':
       transmit(tv_off);
       break;
-    case 'c':
+    case '1':
+      transmit(tv_on);
+      break;
+    default:
+      return -1;
+  }
+  return 0;
+}
+
+int postNumber(String command){
+  for (int i = 0; i < strlen(command); i++){
+    switch (command[i]) {
+      case '0':
+        transmit(tv_num_0);
+        break;
+      case '1':
+        transmit(tv_num_1);
+        break;
+      case '2':
+        transmit(tv_num_2);
+        break;
+      case '3':
+        transmit(tv_num_3);
+        break;
+      case '4':
+        transmit(tv_num_4);
+        break;
+      case '5':
+        transmit(tv_num_5);
+        break;
+      case '6':
+        transmit(tv_num_6);
+        break;
+      case '7':
+        transmit(tv_num_7);
+        break;
+      case '8':
+        transmit(tv_num_8);
+        break;
+      case '9':
+        transmit(tv_num_9);
+        break;
+      default:
+        return -1;
+    }
+  }
+  return 0;
+}
+
+int postSource(String command){
+  switch (command[0]) {
+    case '1':
       transmit(tv_hdmi_1);
       break;
-    case 'd':
+    case '2':
       transmit(tv_hdmi_2);
       break;
-    case 'e':
+    case '3':
       transmit(tv_hdmi_3);
       break;
-    case 'f':
+    default:
+      return -1;
+  }
+  return 0;
+}
+
+int postChannel(String command){
+  switch (command[0]) {
+    case 'u':
       transmit(tv_channel_up);
       break;
-    case 'g':
+    case 'd':
       transmit(tv_channel_down);
       break;
-    case 'h':
+    default:
+      return -1;
+  }
+  return 0;
+}
+
+int postVolume(String command){
+  switch (command[0]) {
+    case 'u':
       transmit(tv_volume_up);
       break;
-    case 'i':
+    case 'd':
       transmit(tv_volume_down);
       break;
-    case 'j':
-      transmit(tv_mute_on);
-      break;
-    case 'k':
+    default:
+      return -1;
+  }
+  return 0;
+}
+
+int postMute(String command){
+  switch (command[0]) {
+    case '0':
       transmit(tv_mute_off);
       break;
-    case 'l':
-      transmit(tv_ok);
+    case '1':
+      transmit(tv_mute_on);
       break;
-    case 'm':
+    default:
+      return -1;
+  }
+  return 0;
+}
+
+int postDir(String command){
+  switch (command[0]) {
+    case 'u':
       transmit(tv_up);
       break;
-    case 'n':
+    case 'd':
       transmit(tv_down);
       break;
-    case 'o':
+    case 'l':
       transmit(tv_left);
       break;
-    case 'p':
+    case 'r':
       transmit(tv_right);
       break;
-    case 'q':
+    default:
+      return -1;
+  }
+  return 0;
+}
+
+int postMisc(String command){
+  switch (command[0]) {
+    case '0':
+      transmit(tv_ok);
+      break;
+    case '1':
       transmit(tv_exit);
       break;
-    case 'r':
+    case '2':
       transmit(tv_enter);
       break;
+    default:
+      return -1;
   }
+  return 0;
 }
 
 void setup() {
-  //Subscribe to "tv_event" events
-  Particle.subscribe("tv_event", receivedAction);
+  Particle.function("postPower", postPower);
+  Particle.function("postNumber", postNumber);
+  Particle.function("postSource", postSource);
+  Particle.function("postChannel", postChannel);
+  Particle.function("postVolume", postVolume);
+  Particle.function("postMute", postMute);
+  Particle.function("postDir", postDir);
+  Particle.function("postMisc", postMisc);
 }
