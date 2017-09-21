@@ -1,22 +1,28 @@
 #include <IRTransmitter.h>
 
-//Set pin that infrared led is connected to
 #define IR_PIN D0
-//Set pin that led is connected to
 #define LED_PIN D7
 
-//All options
-unsigned int tv_on[31] = {564, 564, 1692, 564, 564, 564, 1692, 564, 564, 564, 1692, 564, 564, 564, 564, 564, 1692, 564, 564, 564, 1692, 564, 564, 564, 1692, 564, 564, 564, 1692, 564, 1692};
-unsigned int tv_off[31] = {1692, 564, 564, 564, 1692, 564, 564, 564, 564, 564, 1692, 564, 564, 564, 564, 564, 564, 564, 1692, 564, 564, 564, 1692, 564, 1692, 564, 564, 564, 1692, 564, 1692};
+unsigned int tv_power_off[31] = {1692, 564, 564, 564, 1692, 564, 564, 564, 564, 564, 1692, 564, 564, 564, 564, 564, 564, 564, 1692, 564, 564, 564, 1692, 564, 1692, 564, 564, 564, 1692, 564, 1692};
+unsigned int tv_power_on[31] = {564, 564, 1692, 564, 564, 564, 1692, 564, 564, 564, 1692, 564, 564, 564, 564, 564, 1692, 564, 564, 564, 1692, 564, 564, 564, 1692, 564, 564, 564, 1692, 564, 1692};
+unsigned int tv_power_toggle[31] = {564, 564, 564, 564, 564, 564, 1692, 564, 564, 564, 564, 564, 564, 564, 564, 564, 1692, 564, 1692, 564, 1692, 564, 564, 564, 1692, 564, 1692, 564, 1692, 564, 1692};
+
 unsigned int tv_hdmi_1[31] = {1692, 564, 564, 564, 564, 564, 564, 564, 564, 564, 564, 564, 564, 564, 1692, 564, 564, 564, 1692, 564, 1692, 564, 1692, 564, 1692, 564, 1692, 564, 1692, 564, 564};
 unsigned int tv_hdmi_2[31] = {564, 564, 1692, 564, 564, 564, 564, 564, 564, 564, 564, 564, 564, 564, 1692, 564, 1692, 564, 564, 564, 1692, 564, 1692, 564, 1692, 564, 1692, 564, 1692, 564, 564};
 unsigned int tv_hdmi_3[31] = {1692, 564, 1692, 564, 564, 564, 564, 564, 564, 564, 564, 564, 564, 564, 1692, 564, 564, 564, 564, 564, 1692, 564, 1692, 564, 1692, 564, 1692, 564, 1692, 564, 564};
+unsigned int tv_comp[31] = {1692, 564, 564, 564, 564, 564, 564, 564, 564, 564, 1692, 564, 564, 564, 1692, 564, 564, 564, 1692, 564, 1692, 564, 1692, 564, 1692, 564, 564, 564, 1692, 564, 564};
+unsigned int tv_media[31] = {564, 564, 564, 564, 564, 564, 564, 564, 1692, 564, 1692, 564, 1692, 564, 1692, 564, 1692, 564, 1692, 564, 1692, 564, 1692, 564, 564, 564, 564, 564, 564, 564, 564};
+
 unsigned int tv_channel_up[31] = {564, 564, 564, 564, 564, 564, 564, 564, 564, 564, 564, 564, 564, 564, 564, 564, 1692, 564, 1692, 564, 1692, 564, 1692, 564, 1692, 564, 1692, 564, 1692, 564, 1692};
 unsigned int tv_channel_down[31] = {1692, 564, 564, 564, 564, 564, 564, 564, 564, 564, 564, 564, 564, 564, 564, 564, 564, 564, 1692, 564, 1692, 564, 1692, 564, 1692, 564, 1692, 564, 1692, 564, 1692};
+
 unsigned int tv_volume_up[31] = {564, 564, 1692, 564, 564, 564, 564, 564, 564, 564, 564, 564, 564, 564, 564, 564, 1692, 564, 564, 564, 1692, 564, 1692, 564, 1692, 564, 1692, 564, 1692, 564, 1692};
 unsigned int tv_volume_down[31] = {1692, 564, 1692, 564, 564, 564, 564, 564, 564, 564, 564, 564, 564, 564, 564, 564, 564, 564, 564, 564, 1692, 564, 1692, 564, 1692, 564, 1692, 564, 1692, 564, 1692};
-unsigned int tv_mute_on[31] = {564, 564, 564, 564, 564, 564, 564, 564, 564, 564, 1692, 564, 564, 564, 564, 564, 1692, 564, 1692, 564, 1692, 564, 1692, 564, 1692, 564, 564, 564, 1692, 564, 1692};
+
 unsigned int tv_mute_off[31] = {1692, 564, 564, 564, 564, 564, 564, 564, 564, 564, 1692, 564, 564, 564, 564, 564, 564, 564, 1692, 564, 1692, 564, 1692, 564, 1692, 564, 564, 564, 1692, 564, 1692};
+unsigned int tv_mute_on[31] = {564, 564, 564, 564, 564, 564, 564, 564, 564, 564, 1692, 564, 564, 564, 564, 564, 1692, 564, 1692, 564, 1692, 564, 1692, 564, 1692, 564, 564, 564, 1692, 564, 1692};
+unsigned int tv_mute_toggle[31] = {1692, 564, 564, 564, 564, 564, 1692, 564, 564, 564, 564, 564, 564, 564, 564, 564, 564, 564, 1692, 564, 1692, 564, 564, 564, 1692, 564, 1692, 564, 1692, 564, 1692};
+
 unsigned int tv_num_0[31] = {564, 564, 564, 564, 564, 564, 564, 564, 1692, 564, 564, 564, 564, 564, 564, 564, 1692, 564, 1692, 564, 1692, 564, 1692, 564, 564, 564, 1692, 564, 1692, 564, 1692};
 unsigned int tv_num_1[31] = {1692, 564, 564, 564, 564, 564, 564, 564, 1692, 564, 564, 564, 564, 564, 564, 564, 564, 564, 1692, 564, 1692, 564, 1692, 564, 564, 564, 1692, 564, 1692, 564, 1692};
 unsigned int tv_num_2[31] = {564, 564, 1692, 564, 564, 564, 564, 564, 1692, 564, 564, 564, 564, 564, 564, 564, 1692, 564, 564, 564, 1692, 564, 1692, 564, 564, 564, 1692, 564, 1692, 564, 1692};
@@ -27,37 +33,109 @@ unsigned int tv_num_6[31] = {564, 564, 1692, 564, 1692, 564, 564, 564, 1692, 564
 unsigned int tv_num_7[31] = {1692, 564, 1692, 564, 1692, 564, 564, 564, 1692,564, 564, 564, 564, 564, 564, 564, 564, 564, 564, 564, 564, 564, 1692, 564, 564, 564, 1692, 564, 1692, 564, 1692};
 unsigned int tv_num_8[31] = {564, 564, 564, 564, 564, 564, 1692, 564, 1692, 564, 564, 564, 564, 564, 564, 564, 1692, 564, 1692, 564, 1692, 564, 564, 564, 564, 564, 1692, 564, 1692, 564, 1692};
 unsigned int tv_num_9[31] = {1692, 564, 564, 564, 564, 564, 1692, 564, 1692, 564, 564, 564, 564, 564, 564, 564, 564, 564, 1692, 564, 1692, 564, 564, 564, 564, 564, 1692, 564, 1692, 564, 1692};
-unsigned int tv_ok[31] = {564, 564, 564, 564, 1692, 564, 564, 564, 564, 564, 564, 564, 1692, 564, 564, 564, 1692, 564, 1692, 564, 564, 564, 1692, 564, 1692, 564, 1692, 564, 564, 564, 1692};
+
 unsigned int tv_up[31] = {1692, 564, 564, 564, 1692, 564, 564, 564, 564, 564, 564, 564, 1692, 564, 564, 564, 564, 564, 1692, 564, 564, 564, 1692, 564, 1692, 564, 1692, 564, 564, 564, 1692};
 unsigned int tv_down[31] = {564, 564, 1692, 564, 1692, 564, 564, 564, 564, 564, 564, 564, 1692, 564, 564, 564, 1692, 564, 564, 564, 564, 564, 1692, 564, 1692, 564, 1692, 564, 564, 564, 1692};
 unsigned int tv_left[31] = {1692, 564, 1692, 564, 1692, 564, 564, 564, 564, 564, 564, 564, 1692, 564, 564, 564, 564, 564, 564, 564, 564, 564, 1692, 564, 1692, 564, 1692, 564, 564, 564, 1692};
 unsigned int tv_right[31] = {564, 564, 564, 564, 564, 564, 1692, 564, 564, 564, 564, 564, 1692, 564, 564, 564, 1692, 564, 1692, 564, 1692, 564, 564, 564, 1692, 564, 1692, 564, 564, 564, 1692};
+
+unsigned int tv_ok[31] = {564, 564, 564, 564, 1692, 564, 564, 564, 564, 564, 564, 564, 1692, 564, 564, 564, 1692, 564, 1692, 564, 564, 564, 1692, 564, 1692, 564, 1692, 564, 564, 564, 1692};
 unsigned int tv_exit[31] = {1692, 564, 564, 564, 564, 564, 1692, 564, 564, 564, 564, 564, 1692, 564, 564, 564, 564, 564, 1692, 564, 1692, 564, 564, 564, 1692, 564, 1692, 564, 564, 564, 1692};
+unsigned int tv_back[31] = {564, 564, 1692, 564, 564, 564, 1692, 564, 564, 564, 564, 564, 1692, 564, 564, 564, 1692, 564, 564, 564, 1692, 564, 564, 564, 1692, 564, 1692, 564, 564, 564, 1692};
 unsigned int tv_enter[31] = {1692, 564, 1692, 564, 1692, 564, 1692, 564, 1692, 564, 1692, 564, 1692, 564, 1692, 564, 564, 564, 564, 564, 564, 564, 564, 564, 564, 564, 564, 564, 564, 564, 564};
+unsigned int tv_settings[31] = {1692, 564, 1692, 564, 1692, 564, 1692, 564, 564, 564, 564, 564, 1692, 564, 564, 564, 564, 564, 564, 564, 564, 564, 564, 564, 1692, 564, 1692, 564, 564, 564, 1692};
 
 //Skeleton for every signal
 unsigned int signalData[68] = {9024, 4512, 564, 564, 564, 564, 564, 1692, 564, 564, 564, 564, 564, 564, 564, 564, 564, 564, 564, 1692, 564, 1692, 564, 564, 564, 1692, 564, 1692, 564, 1692, 564,
   1692, 564, 1692, 564, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 564, 39756};
 
-//Initialize ir library
 IRTransmitter transmitter(IR_PIN, LED_PIN);
 
-void transmit(unsigned int * data){
-  //Replace middle section of skeleton with specified option
+void transmit(unsigned int* data){
   for (int i = 35; i < 66; i++)
     signalData[i] = data[i - 35];
 
-  //Send signal through ir led
   transmitter.Transmit(signalData, 68);
 }
 
 int postPower(String command){
   switch (command[0]) {
     case '0':
-      transmit(tv_off);
+      transmit(tv_power_off);
       break;
     case '1':
-      transmit(tv_on);
+      transmit(tv_power_on);
+      break;
+    case 't':
+      transmit(tv_power_toggle);
+      break;
+    default:
+      return -1;
+  }
+  return 0;
+}
+
+int postSource(String command){
+  switch (command[0]) {
+    case '0':
+      transmit(tv_hdmi_1);
+      break;
+    case '1':
+      transmit(tv_hdmi_2);
+      break;
+    case '2':
+      transmit(tv_hdmi_3);
+      break;
+    case '3':
+      transmit(tv_comp);
+      break;
+    case '4':
+      transmit(tv_media);
+      break;
+    default:
+      return -1;
+  }
+  return 0;
+}
+
+int postChannel(String command){
+  switch (command[0]) {
+    case 'u':
+      transmit(tv_channel_up);
+      break;
+    case 'd':
+      transmit(tv_channel_down);
+      break;
+    default:
+      return -1;
+  }
+  return 0;
+}
+
+int postVolume(String command){
+  switch (command[0]) {
+    case 'u':
+      transmit(tv_volume_up);
+      break;
+    case 'd':
+      transmit(tv_volume_down);
+      break;
+    default:
+      return -1;
+  }
+  return 0;
+}
+
+int postMute(String command){
+  switch (command[0]) {
+    case '0':
+      transmit(tv_mute_off);
+      break;
+    case '1':
+      transmit(tv_mute_on);
+      break;
+    case 't':
+      transmit(tv_mute_toggle);
       break;
     default:
       return -1;
@@ -105,65 +183,6 @@ int postNumber(String command){
   return 0;
 }
 
-int postSource(String command){
-  switch (command[0]) {
-    case '1':
-      transmit(tv_hdmi_1);
-      break;
-    case '2':
-      transmit(tv_hdmi_2);
-      break;
-    case '3':
-      transmit(tv_hdmi_3);
-      break;
-    default:
-      return -1;
-  }
-  return 0;
-}
-
-int postChannel(String command){
-  switch (command[0]) {
-    case 'u':
-      transmit(tv_channel_up);
-      break;
-    case 'd':
-      transmit(tv_channel_down);
-      break;
-    default:
-      return -1;
-  }
-  return 0;
-}
-
-int postVolume(String command){
-  switch (command[0]) {
-    case 'u':
-      transmit(tv_volume_up);
-      break;
-    case 'd':
-      transmit(tv_volume_down);
-      break;
-    default:
-      return -1;
-  }
-  return 0;
-}
-
-int postMute(String command){
-  switch (command[0]) {
-    case '0':
-      transmit(tv_mute_off);
-      break;
-    case '1':
-      transmit(tv_mute_on);
-      break;
-    default:
-      return -1;
-  }
-  return 0;
-}
-
 int postDir(String command){
   switch (command[0]) {
     case 'u':
@@ -193,7 +212,13 @@ int postMisc(String command){
       transmit(tv_exit);
       break;
     case '2':
+      transmit(tv_back);
+      break;
+    case '3':
       transmit(tv_enter);
+      break;
+    case '4':
+      transmit(tv_settings);
       break;
     default:
       return -1;
@@ -202,12 +227,12 @@ int postMisc(String command){
 }
 
 void setup() {
-  Particle.function("postPower", postPower);
-  Particle.function("postNumber", postNumber);
-  Particle.function("postSource", postSource);
-  Particle.function("postChannel", postChannel);
-  Particle.function("postVolume", postVolume);
-  Particle.function("postMute", postMute);
-  Particle.function("postDir", postDir);
-  Particle.function("postMisc", postMisc);
+  Particle.function("power", postPower);
+  Particle.function("source", postSource);
+  Particle.function("channel", postChannel);
+  Particle.function("volume", postVolume);
+  Particle.function("mute", postMute);
+  Particle.function("number", postNumber);
+  Particle.function("dir", postDir);
+  Particle.function("misc", postMisc);
 }
